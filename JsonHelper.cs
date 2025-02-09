@@ -31,13 +31,14 @@ public static class JsonHelper
     public static void SaveJsonFile<T>(string path, T value) => SaveJsonFile(path, new T[] { value });
     public static void SaveJsonFile<T>(string path, T[] array)
     {
-        StreamWriter saveFile;
         if (File.Exists(path))
             File.Delete(path);
 
-        saveFile = new StreamWriter(File.Create(path));
-        saveFile.Write(ToJson(array));
-        saveFile.Flush();
+        using(StreamWriter saveFile = new StreamWriter(File.Create(path)))
+        {
+            saveFile.Write(ToJson(array));
+            saveFile.Flush();
+        }
     }
 
     [System.Serializable]
